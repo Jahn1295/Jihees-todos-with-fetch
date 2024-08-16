@@ -32,18 +32,18 @@ export const fetchTodos = (setTodos) => {
                 console.error("Fetched data is not an Array", data.todos);
                 setTodos([]);
             }
-        
+
         })
         .catch((error) => console.error("There's been a problem with your fetch opp:", error));
 };
 
-export const addTodoToAPI = async (todos, inputValue, setTodos ) => {
+export const addTodoToAPI = async (todos, inputValue, setTodos) => {
     try {
         const newTodo = {
             label: inputValue.trim(),
             is_done: false
         };
-        
+
         const response = await fetch('https://playground.4geeks.com/todo/todos/Jihee', {
             method: "POST",
             body: JSON.stringify(newTodo),
@@ -59,11 +59,28 @@ export const addTodoToAPI = async (todos, inputValue, setTodos ) => {
         const data = await response.json();
         const updatedTodos = [
             ...todos,
-            { ...newTodo, id: data.id},
+            { ...newTodo, id: data.id },
         ];
         setTodos(updatedTodos);
         fetchTodos(setTodos);
     } catch (error) {
         console.error("There's been a problem with your fetch opp:", error)
     }
-}
+};
+
+export const deleteTodoAPI = async (id, setTodos) => {
+    try {
+        const response = await fetch(`https://playground.4geeks.com/todo/todos/${id}`, {
+            method: 'DELETE',
+            headers: {
+                "Content-Type": "application/json"
+            }
+        });
+        if (!response.ok) {
+            throw new Error(`Failed to delete todo. Status: ${response.status}`);
+        }
+        fetchTodos(setTodos)
+    } catch (error) {
+        console.error("There's been a problem deleting the todo:", error);
+    }
+};

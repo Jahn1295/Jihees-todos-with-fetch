@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { createUser, fetchTodos, addTodoToAPI } from "../updateAPI.js";
+import { createUser, fetchTodos, addTodoToAPI, deleteTodoAPI } from "../updateAPI.js";
 
 //create your first component
 const Home = () => {
@@ -26,11 +26,31 @@ const Home = () => {
 		}
 	}
 	const handleDeleteTodo = (index) => {
-		setTodos(todos.filter((todo, i) => index !== i))
+		const id = todos[index].id;
+		const todoLabel = todos[index].label;
+		const updatedTodos = todos.filter((todo, i) => index !== i);
+		setTodos(updatedTodos)
+		console.log('Successfully updated todo API' + todoLabel)
+		deleteTodoAPI(id, setTodos)
 	}
 	const handleCreateUser = () => {
 		createUser();
 	}
+	const handleClearTasks = async () => {
+		try {
+			const response = await fetch('https://playground.4geeks.com/todo/users/Jihee', {
+				method: 'DELETE',
+			});
+			if (!response.ok) {
+				throw new Error(`Failed to clear tasks. Status: ${response.status}`);
+			}
+			setTodos([]);
+		} catch (error) {
+			console.error("There's been a problem clearing the tasks:", error);
+		}
+	}
+
+
 	return (
 		<div className="todoListBody">
 			<h1 className="title">My ToDo's List</h1>
@@ -63,7 +83,7 @@ const Home = () => {
 			</div>
 			<div className="btn-div">
 				<button onClick={handleCreateUser} className="btn btn-primary">Create User to save tasks</button>
-				{/* <button onClick={handleClearTasks} className="btn btn-primary">Clear User and tasks</button> */}
+				<button onClick={handleClearTasks} className="btn btn-primary">Clear User and tasks</button>
 			</div>
 		</div>
 	);
