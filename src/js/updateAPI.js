@@ -84,3 +84,4 @@ export const deleteTodoAPI = async (id, setTodos) => {
         console.error("There's been a problem deleting the todo:", error);
     }
 };
+

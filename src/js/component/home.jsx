@@ -81,8 +81,8 @@ const Home = () => {
 			<div>
 				{todos.length} {todos.length === 1 ? "item" : "items"} left
 			</div>
-			<div className="btn-div">
-				<button onClick={handleCreateUser} className="btn btn-primary">Create User to save tasks</button>
+			<div className="btn-div mt-3">
+				<button onClick={handleCreateUser} className="btn btn-primary me-3">Create User to save tasks</button>
 				<button onClick={handleClearTasks} className="btn btn-primary">Clear User and tasks</button>
 			</div>
 		</div>
